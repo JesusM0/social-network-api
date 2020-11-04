@@ -1,5 +1,5 @@
 const moment = require('moment');
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 
 const ReactionSchema = new Schema(
   {
@@ -15,13 +15,13 @@ const ReactionSchema = new Schema(
     },
     username: {
       type: String,
-      required: 'Valid Username Is Required.',
+      required: 'Username Must Be Included With Reaction.',
     },
     createdAt: {
       type: Date,
       default: Date.now,
       get: (createdAtVal) =>
-        moment(createdAtVal).format(`MMM DD, YYYY [at] hh:mm a`),
+        moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a'),
     },
   },
   {
@@ -36,9 +36,10 @@ const ThoughtSchema = new Schema(
   {
     thoughtText: {
       type: String,
-      required: 'Enter What Is On Your Mind.',
+      required: 'Thought Must Be Included.',
       minlength: 1,
       maxlength: 280,
+      trim: true,
     },
     createdAt: {
       type: Date,
@@ -48,9 +49,9 @@ const ThoughtSchema = new Schema(
     },
     username: {
       type: String,
-      required: 'Enter Valid Username.',
+      required: 'Username Must Be Included With Thought.',
     },
-    reactions: [reactionSchema],
+    reactions: [ReactionSchema],
   },
   {
     toJSON: {
